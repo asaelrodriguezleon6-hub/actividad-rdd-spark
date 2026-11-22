@@ -1,0 +1,70 @@
+
+============================================================
+Ejercicio 1: Word Count Basico
+============================================================
+Conteo de palabras: [('hola', 2), ('mundo', 2), ('spark', 2)]
+
+============================================================
+Ejercicio 2: Analisis de Ventas
+============================================================
+a) Suma por ciudad: [('Madrid', 150), ('Barcelona', 200)]
+b) Ciudades con ventas > 100: [('Madrid', 150), ('Barcelona', 200)]
+c) Ordenado de mayor a menor: [('Barcelona', 200), ('Madrid', 150)]
+
+============================================================
+Ejercicio 3: Filtrado y Transformacion
+============================================================
+Precios >= 20 USD convertidos a EUR: [22.5, 36.0, 90.0]
+
+============================================================
+Ejercicio 4: Procesamiento de CSV
+============================================================
+Productos aplanados: ['Leche', 'Huevos', 'Pan', 'Manzanas', 'Peras', 'Leche', 'Chocolate']
+Productos unicos: ['Chocolate', 'Huevos', 'Leche', 'Manzanas', 'Pan', 'Peras']
+Cantidad de productos unicos: 6
+
+============================================================
+Ejercicio 5: Analisis de Logs
+============================================================
+Peticiones por IP: [('192.168.1.1', 2), ('192.168.1.2', 1)]
+IPs con mas de 1 peticion: [('192.168.1.1', 2)]
+Resultado guardado en output/ips_frecuentes/
+part-00000 -> 
+part-00001 -> ('192.168.1.1', 2)
+
+============================================================
+Ejercicio 6: Pipeline y Shuffle
+============================================================
+Resultado final: [('Barcelona', 200), ('Madrid', 100)]
+Linaje (DAG):
+(32) PythonRDD[52] at collect at /home/asael-rodriguez/actividad-rdd-spark/ejercicios.py:74 []
+ |   MapPartitionsRDD[51] at mapPartitions at PythonRDD.scala:197 []
+ |   ShuffledRDD[50] at partitionBy at DirectMethodHandleAccessor.java:104 []
+ +-(32) PairwiseRDD[49] at sortBy at /home/asael-rodriguez/actividad-rdd-spark/ejercicios.py:73 []
+    |   PythonRDD[48] at sortBy at /home/asael-rodriguez/actividad-rdd-spark/ejercicios.py:73 []
+    |   MapPartitionsRDD[45] at mapPartitions at PythonRDD.scala:197 []
+    |   ShuffledRDD[44] at partitionBy at DirectMethodHandleAccessor.java:104 []
+    +-(32) PairwiseRDD[43] at reduceByKey at /home/asael-rodriguez/actividad-rdd-spark/ejercicios.py:72 []
+       |   PythonRDD[42] at reduceByKey at /home/asael-rodriguez/actividad-rdd-spark/ejercicios.py:72 []
+       |   ParallelCollectionRDD[41] at readRDDFromFile at PythonRDD.scala:326 []
+
+============================================================
+Ejercicio 7: Diferencia Map vs FlatMap
+============================================================
+map     : [['Hola', 'mundo'], ['Apache', 'Spark', 'es', 'guay']]
+flatMap : ['Hola', 'mundo', 'Apache', 'Spark', 'es', 'guay']
+Con map se obtiene una lista de listas (1 entrada -> 1 salida).
+Con flatMap se obtiene una lista plana (1 entrada -> N salidas).
+
+============================================================
+Ejercicio 8: Optimizacion
+============================================================
+Respuesta: si un RDD se usa 5 veces, hay que persistirlo con cache() o
+persist(StorageLevel.MEMORY_AND_DISK). Asi Spark no recalcula todo el linaje
+en cada accion. Al terminar se libera con unpersist().
+Count 1: 333334
+Suma   : 333333666666
+Max    : 1999998
+Min    : 0
+Count 2: 333334
+Nivel de almacenamiento: Disk Memory Serialized 1x Replicated
